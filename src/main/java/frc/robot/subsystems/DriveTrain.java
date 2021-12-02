@@ -7,6 +7,7 @@
 
 package frc.robot.subsystems;
 
+import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
@@ -22,6 +23,33 @@ import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 public class DriveTrain extends SubsystemBase {
   // -------------------- Motors -------------------- \\
   // Left Motors
-  public WPI_VictorSPX motor_l  = new WPI_VictorSPX(5);
-  public WPI_VictorSPX motor_r;// = new WPI_VictorSPX(5);
+  public WPI_VictorSPX motor_left_slave = new WPI_VictorSPX(0);
+  public WPI_VictorSPX motor_left_master = new WPI_VictorSPX(1);
+  public WPI_VictorSPX motor_right_slave = new WPI_VictorSPX(2);
+  public WPI_VictorSPX motor_right_master = new WPI_VictorSPX(5);
+  private DifferentialDrive dd;
+  
+  public DriveTrain() {
+    motor_right_slave.setInverted(true);
+    motor_right_master.setInverted(true);
+    motor_left_slave.setInverted(false);
+    motor_left_master.setInverted(false);
+
+    motor_right_slave.follow(motor_right_master);
+    motor_left_slave.follow(motor_left_master);
+
+    dd = new DifferentialDrive(
+      motor_left_master, 
+      motor_right_master
+    );
+  }
+
+  /**
+   * Initializes a drive mode where only one joystick controls the drive motors.
+   * @param x The joystick's forward/backward tilt. Any value from -1.0 to 1.0.
+   * @param z The joystick's vertical "twist". Any value from -1.0 to 1.0.
+   */
+  public void singleJoystickDrive(double x, double z) {
+    dd.arcadeDrive(x, -z);
+  }
 }

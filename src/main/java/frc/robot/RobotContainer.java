@@ -5,6 +5,7 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.GenericHID;
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.commands.ExampleCommand;
 import frc.robot.commands.SingleJoystickDrive;
@@ -23,7 +24,7 @@ public class RobotContainer {
     // The robot's subsystems and commands are defined here...
     private final DriveTrain drivetrain = new DriveTrain();
 
-    private final SingleJoystickDrive teleopcmd;
+    final Joystick stick1 = new Joystick(1);
 
     /**
      * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -31,7 +32,6 @@ public class RobotContainer {
     public RobotContainer() {
         // Configure the button bindings
         configureButtonBindings();
-        teleopcmd = new SingleJoystickDrive(drivetrain);
     }
 
     /**
@@ -48,12 +48,12 @@ public class RobotContainer {
      *
      * @return the command to run in autonomous
      */
-    public Command getAutonomousCommand() {
-        // An ExampleCommand will run in autonomous
-        return teleopcmd;
-    }
+    // public Command getAutonomousCommand() {
+    //     // An ExampleCommand will run in autonomous
+    //     //return teleopcmd;
+    // }
 
     public Command getTeleopCommand() {
-        return this.teleopcmd;
+        return new SingleJoystickDrive(drivetrain, stick1);
     }
 }
