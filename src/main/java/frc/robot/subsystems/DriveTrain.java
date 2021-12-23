@@ -7,6 +7,7 @@
 
 package frc.robot.subsystems;
 
+import edu.wpi.first.wpilibj.PIDController;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
@@ -27,6 +28,7 @@ public class DriveTrain extends SubsystemBase {
   public WPI_VictorSPX motor_left_master = new WPI_VictorSPX(1);
   public WPI_VictorSPX motor_right_slave = new WPI_VictorSPX(2);
   public WPI_VictorSPX motor_right_master = new WPI_VictorSPX(5);
+  //public PIDController angular_pid = new PIDController(Constants.p, Constants.i, Constants.d)
   private DifferentialDrive dd;
   
   public DriveTrain() {
@@ -51,5 +53,10 @@ public class DriveTrain extends SubsystemBase {
    */
   public void singleJoystickDrive(double x, double z) {
     dd.arcadeDrive(x, -z);
+  }
+
+
+  public void velocityDrve(double forwards, double angular) {
+
   }
 }
