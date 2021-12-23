@@ -6,6 +6,7 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.commands.ExampleCommand;
 import frc.robot.commands.SingleJoystickDrive;
@@ -41,6 +42,9 @@ public class RobotContainer {
      * passing it to a {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
      */
     private void configureButtonBindings() {
+        new JoystickButton(stick1, 1).whenPressed(() -> m_driveTrain.driveStraight(0.5))
+        .whenReleased(() -> m_driveTrain.driveStraight(0));
+
     }
 
     /**

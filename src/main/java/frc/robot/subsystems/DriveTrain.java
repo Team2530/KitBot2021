@@ -59,4 +59,9 @@ public class DriveTrain extends SubsystemBase {
   public void velocityDrve(double forwards, double angular) {
 
   }
+
+  public void driveStraight(double power) {
+    motor_left.set(power);
+    motor_right.set(power);
+  }
 }
