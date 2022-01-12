@@ -4,8 +4,11 @@
 
 package frc.robot.subsystems;
 
+import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+import com.ctre.phoenix.motorcontrol.can.VictorSPX;
+
+import edu.wpi.first.hal.CANData;
 import edu.wpi.first.wpilibj.CAN;
-import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class InCANCievable extends SubsystemBase {
@@ -14,38 +17,36 @@ public class InCANCievable extends SubsystemBase {
     private static final int mfg = 8; // Fill in from InCANCievable github
     private static final int type = 10; // Fill in from InCANCievable github
 
-    private static final int STARTPROG_APID = 0b01;
-    private static final int STOPPROG_APID = 0b10;
-    
-
     CAN conn;
+    CANData recv;
+
+    // Note: API ID (class) is 6 bits
 
     /** Creates a new ExampleSubsystem. */
     public InCANCievable(int can_id) {
+        VictorSPX e;
         conn = new CAN(dvc_num = can_id, mfg, type);
     }
 
     @Override
     public void periodic() {
-        // This method will be called once per scheduler run
-
-        byte[] data = "Polling...".getBytes();
-
-        conn.writePacket(data, POLL_APID);
+        // ...Periodically called whenever WPILib feels like it :)
+        if (conn.readPacketLatest(25, recv)) {
+            // Received data
+            System.out.println(recv.data[0]);
+        }
     }
 
-    @Override
-    public void simulationPeriodic() {
-        // This method will be called once per scheduler run during simulation
-    }
+    // @Override
+    // public void simulationPeriodic() {
+    //     // This method will be called once per scheduler run during simulation
+    // }
 
     public void runProgram(int prog) {
-        byte[] data = { (byte) prog };
-
-        conn.writePacket(data, STARTPROG_APID);
+        conn.writePacket(new byte[] { (byte) prog }, 25);
     }
 
     public void stopProgram() {
-        conn.writePacket(new byte[0], STOPPROG_APID);
+        conn.writePacket(new byte[0], 25);
     }
 }
